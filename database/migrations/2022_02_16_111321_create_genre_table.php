@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('table_author')) {
-            Schema::create('table_author', function (Blueprint $table) {
+        if (!Schema::hasTable('genre')) {
+            Schema::create('genre', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->timestamps();
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_author');
+        Schema::dropIfExists('genre');
     }
 };
