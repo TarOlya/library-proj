@@ -4,18 +4,19 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Author;
+use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
+class AuthorSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
-        $this->call(AuthorSeeder::class);
-        $this->call(GenreSeeder::class);
-        $this->call(BookSeeder::class);
+        DB::table('author')->delete();
+        Author::factory()->count(10)->create();
     }
 }

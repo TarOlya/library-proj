@@ -16,12 +16,14 @@ return new class extends Migration
         if (!Schema::hasTable('book')) {
             Schema::create('book', function (Blueprint $table) {
                 $table->id();
+                $table->string('name');
                 $table->unsignedBigInteger('author_id');
                 $table->unsignedBigInteger('genre_id');
                 $table->timestamps();
 
-                $table->foreign('author_id')->references('id')->on('author');
-                $table->foreign('author_id')->onUpdate('cascade')->onDelete('cascade');
+                $table->foreign('author_id')->references('id')->on('author')->onUpdate('cascade')->onDelete('cascade');
+
+                $table->foreign('genre_id')->references('id')->on('genre')->onUpdate('cascade')->onDelete('cascade');
             });
         }
     }
