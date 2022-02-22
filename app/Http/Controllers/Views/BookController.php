@@ -21,6 +21,5 @@ class BookController extends Controller
         return view('book.one_item')
                 ->with('book', $book)
                 ->with('id', $id);
-
     }
 }
