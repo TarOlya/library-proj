@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('authors', [Api\AuthorController::class, 'index']);
 Route::get('authors/{id}', [Api\AuthorController::class, 'show']);
 Route::put('authors/{id}', [Api\AuthorController::class, 'update']);
+Route::post('authors', [Api\AuthorController::class, 'store']);

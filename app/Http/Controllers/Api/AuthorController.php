@@ -36,9 +36,11 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Requests\AuthorRequest $request)
     {
-        //
+        $author = new Author;
+        $author->name = $request->name;
+        $author->save();
     }
 
     /**
@@ -73,7 +75,7 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\UpdateAuthorRequest $request, $id)
+    public function update(Requests\AuthorRequest $request, $id)
     {
         $author = Author::findOrFail($id);
         if(!empty($request->name)){
