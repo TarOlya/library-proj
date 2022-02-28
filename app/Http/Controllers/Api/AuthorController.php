@@ -41,6 +41,7 @@ class AuthorController extends Controller
         $author = new Author;
         $author->name = $request->name;
         $author->save();
+        return response()->json($author->toJson(), 201);
     }
 
     /**
@@ -77,13 +78,25 @@ class AuthorController extends Controller
      */
     public function update(Requests\AuthorRequest $request, $id)
     {
-        $author = Author::findOrFail($id);
+        $response = null;
+
+        $author = Author::find($id);
         if(!empty($request->name)){
-            $author->update($request->all());
+            if(empty($author)){
+                $author = new Author;
+                $author->name = $request->name;
+                $author->id = $id;
+                $author->save();
+                $response = response()->json($author->toJson(), 201); //create new author
+            }else{
+                $author->update($request->all()); //edit existing author
+                $response = response()->json($author->toJson(), 200);
+            }
         }
-        return $author?
-                response()->json($author->toJson(), 202):
-                response()->json("No obj", 404);
+
+        return $response?
+                $response:
+                response()->json('No params', 405);
     }
 
     /**
@@ -94,6 +107,20 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $response = null;
+
+        $author = Author::find($id);
+        if(!empty($author)){
+            $isDeleted = $author->delete();
+            if($isDeleted){
+                $response = response()->json('Deleted succesfully', 200);
+            }else{
+                $response = response()->json('Not deleted', 400);
+            }
+        }
+        
+        return $response?
+                $response:
+                response()->json('Not found obj', 404);
     }
 }
