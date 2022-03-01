@@ -21,9 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('authors', [Api\AuthorController::class, 'index']);
 Route::get('authors/{id}', [Api\AuthorController::class, 'show']);
-
 Route::put('authors/{id}', [Api\AuthorController::class, 'update']);
-
 Route::post('authors', [Api\AuthorController::class, 'store']);
-
 Route::delete('authors/{id}', [Api\AuthorController::class, 'destroy']);
+
+
+Route::get('genres', [Api\GenreController::class, 'index']);
+Route::get('genres/{id}', [Api\GenreController::class, 'show']);
+Route::put('genres/{id}', [Api\GenreController::class, 'update']);
+Route::post('genres', [Api\GenreController::class, 'store']);
+Route::delete('genres/{id}', [Api\GenreController::class, 'destroy']);
