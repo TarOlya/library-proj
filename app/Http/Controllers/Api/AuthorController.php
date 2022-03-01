@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Views\Controller;
-use Illuminate\Http\Request;
 use App\Models\Author;
-use App\Http\Requests;
+use App\Http\Requests\AuthorRequest;
 
 class AuthorController extends Controller
 {
@@ -36,7 +35,7 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Requests\AuthorRequest $request)
+    public function store(AuthorRequest $request)
     {
         $author = new Author;
         $author->name = $request->name;
@@ -76,7 +75,7 @@ class AuthorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Requests\AuthorRequest $request, $id)
+    public function update(AuthorRequest $request, $id)
     {
         $response = null;
 
