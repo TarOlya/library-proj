@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Views\Controller;
-use App\Models\Author;
-use App\Http\Requests\AuthorRequest;
+use Illuminate\Http\Request;
+use App\Models\Genre;
+use App\Http\Requests\GenreRequest;
 
-class AuthorController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +16,8 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $authors = Author::all();
-        return response()->json($authors->toJson(), 200);
+        $genres = Genre::all();
+        return response()->json($genres->toJson(), 200);
     }
 
     /**
@@ -32,15 +33,15 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\AuthorRequest  $request
+     * @param  \App\Http\Requests\GenreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AuthorRequest $request)
+    public function store(GenreRequest $request)
     {
-        $author = new Author;
-        $author->name = $request->name;
-        $author->save();
-        return response()->json($author->toJson(), 201);
+        $genre = new Genre;
+        $genre->name = $request->name;
+        $genre->save();
+        return response()->json($genre->toJson(), 201);
     }
 
     /**
@@ -51,8 +52,8 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = Author::findOrFail($id);
-        return response()->json($author->toJson(), 200);
+        $genre = Genre::findOrFail($id);
+        return response()->json($genre->toJson(), 200);
     }
 
     /**
@@ -69,25 +70,25 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\AuthorRequest  $request
+     * @param  \App\Http\Requests\GenreRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(AuthorRequest $request, $id)
+    public function update(GenreRequest $request, $id)
     {
         $response = null;
 
-        $author = Author::find($id);
+        $genre = Genre::find($id);
         if(!empty($request->name)){
-            if(empty($author)){
-                $author = new Author;
-                $author->name = $request->name;
-                $author->id = $id;
-                $author->save();
-                $response = response()->json($author->toJson(), 201); //create new author
+            if(empty($genre)){
+                $genre = new Genre;
+                $genre->name = $request->name;
+                $genre->id = $id;
+                $genre->save();
+                $response = response()->json($genre->toJson(), 201);
             }else{
-                $author->update($request->all()); //edit existing author
-                $response = response()->json($author->toJson(), 200);
+                $genre->update($request->all());
+                $response = response()->json($genre->toJson(), 200);
             }
         }
 
@@ -106,16 +107,16 @@ class AuthorController extends Controller
     {
         $response = null;
 
-        $author = Author::find($id);
-        if(!empty($author)){
-            $isDeleted = $author->delete();
+        $genre = Genre::find($id);
+        if(!empty($genre)){
+            $isDeleted = $genre->delete();
             if($isDeleted){
                 $response = response()->json('Deleted succesfully', 200);
             }else{
                 $response = response()->json('Not deleted', 400);
             }
         }
-        
+
         return $response?
                 $response:
                 response()->json('Not found obj', 404);
