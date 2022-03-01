@@ -32,7 +32,7 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\AuthorRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(AuthorRequest $request)
@@ -52,9 +52,7 @@ class AuthorController extends Controller
     public function show($id)
     {
         $author = Author::findOrFail($id);
-        return $author?
-                response()->json($author->toJson(), 200):
-                response()->json("No obj", 404);
+        return response()->json($author->toJson(), 200);
     }
 
     /**
@@ -71,7 +69,7 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\AuthorRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -95,7 +93,7 @@ class AuthorController extends Controller
 
         return $response?
                 $response:
-                response()->json('No params', 405);
+                response()->json('No correct params', 405);
     }
 
     /**
