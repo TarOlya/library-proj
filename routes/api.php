@@ -31,3 +31,10 @@ Route::get('genres/{id}', [Api\GenreController::class, 'show']);
 Route::put('genres/{id}', [Api\GenreController::class, 'update']);
 Route::post('genres', [Api\GenreController::class, 'store']);
 Route::delete('genres/{id}', [Api\GenreController::class, 'destroy']);
+
+
+Route::get('books', [Api\BookController::class, 'index']);
+Route::get('books/{id}', [Api\BookController::class, 'show']);
+Route::put('books/{id}', [Api\BookController::class, 'update']);
+Route::post('books', [Api\BookController::class, 'store']);
+Route::delete('books/{id}', [Api\BookController::class, 'destroy']);

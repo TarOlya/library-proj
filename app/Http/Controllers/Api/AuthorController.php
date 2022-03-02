@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Views\Controller;
+use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Http\Requests\AuthorRequest;
 
@@ -37,9 +37,7 @@ class AuthorController extends Controller
      */
     public function store(AuthorRequest $request)
     {
-        $author = new Author;
-        $author->name = $request->name;
-        $author->save();
+        $author = Author::create($request->all());
         return response()->json($author->toJson(), 201);
     }
 
@@ -78,22 +76,16 @@ class AuthorController extends Controller
         $response = null;
 
         $author = Author::find($id);
-        if(!empty($request->name)){
-            if(empty($author)){
-                $author = new Author;
-                $author->name = $request->name;
-                $author->id = $id;
-                $author->save();
-                $response = response()->json($author->toJson(), 201); //create new author
-            }else{
-                $author->update($request->all()); //edit existing author
-                $response = response()->json($author->toJson(), 200);
-            }
+        if(empty($author)){
+            $data = array_merge(['id' => $id], $request->all());
+            $author = Author::create($data);
+            $response = response()->json($author->toJson(), 201); 
+        }else{
+            $author->update($request->all());
+            $response = response()->json($author->toJson(), 200);
         }
 
-        return $response?
-                $response:
-                response()->json('No correct params', 405);
+        return $response;
     }
 
     /**
@@ -104,20 +96,9 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        $response = null;
-
-        $author = Author::find($id);
-        if(!empty($author)){
-            $isDeleted = $author->delete();
-            if($isDeleted){
-                $response = response()->json('Deleted succesfully', 200);
-            }else{
-                $response = response()->json('Not deleted', 400);
-            }
-        }
-        
-        return $response?
-                $response:
-                response()->json('Not found obj', 404);
+        $author = Author::findOrFail($id);
+        $author->delete();
+            
+        return response()->json('Deleted succesfully', 204);
     }
 }

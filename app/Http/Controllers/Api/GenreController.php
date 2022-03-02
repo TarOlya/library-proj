@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Views\Controller;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Genre;
 use App\Http\Requests\GenreRequest;
@@ -38,9 +38,7 @@ class GenreController extends Controller
      */
     public function store(GenreRequest $request)
     {
-        $genre = new Genre;
-        $genre->name = $request->name;
-        $genre->save();
+        $genre = Genre::create($request->all());
         return response()->json($genre->toJson(), 201);
     }
 
@@ -79,22 +77,16 @@ class GenreController extends Controller
         $response = null;
 
         $genre = Genre::find($id);
-        if(!empty($request->name)){
-            if(empty($genre)){
-                $genre = new Genre;
-                $genre->name = $request->name;
-                $genre->id = $id;
-                $genre->save();
-                $response = response()->json($genre->toJson(), 201);
-            }else{
-                $genre->update($request->all());
-                $response = response()->json($genre->toJson(), 200);
-            }
+        if(empty($genre)){
+            $data = array_merge(['id' => $id], $request->all());
+            $genre = Genre::create($data);
+            $response = response()->json($genre->toJson(), 201);
+        }else{
+            $genre->update($request->all());
+            $response = response()->json($genre->toJson(), 200);
         }
 
-        return $response?
-                $response:
-                response()->json('No correct params', 405);
+        return $response;
     }
 
     /**
@@ -105,20 +97,9 @@ class GenreController extends Controller
      */
     public function destroy($id)
     {
-        $response = null;
+        $genre = Genre::findOrFail($id);
+        $genre->delete();
 
-        $genre = Genre::find($id);
-        if(!empty($genre)){
-            $isDeleted = $genre->delete();
-            if($isDeleted){
-                $response = response()->json('Deleted succesfully', 200);
-            }else{
-                $response = response()->json('Not deleted', 400);
-            }
-        }
-
-        return $response?
-                $response:
-                response()->json('Not found obj', 404);
+        return response()->json('Deleted succesfully', 204);
     }
 }

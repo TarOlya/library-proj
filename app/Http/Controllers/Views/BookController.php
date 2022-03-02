@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Views;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Http\Controllers\Controller;
 
 class BookController extends Controller
 {

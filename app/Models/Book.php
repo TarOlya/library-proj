@@ -14,16 +14,17 @@ class Book extends Model
     protected $table = 'book';
 
     protected $fillable = [
+        'id',
         'name',
         'author_id',
         'genre_id'
     ];
 
     public function author() {
-        return $this->belongsTo(Author::class);
+        return $this->hasMany(Author::class);
     }
 
     public function genre() {
-        return $this->belongsTo(Genre::class);
+        return $this->hasMany(Genre::class);
     }
 }
