@@ -14,11 +14,9 @@ class BookController extends Controller
         return view('book.all')->with('books', $books);
     }
 
-    public function getById($id = 0)
+    public function getById($id)
     {
-        $book = $id != 0 ?
-                Book::find($id):
-                null;
+        $book = Book::find($id);
         return view('book.one_item')
                 ->with('book', $book)
                 ->with('id', $id);

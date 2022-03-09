@@ -9,38 +9,27 @@ use App\Http\Requests\BookRequest;
 use App\Models\Author;
 use App\Models\Genre;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
-    {
+    public function index(): JsonResponse {
         $books = Book::all();
         return response()->json($books->toJson(), 200);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Create the resource.
      *
      * @param  \App\Http\Requests\BookRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(BookRequest $request)
-    {
+    public function create(BookRequest $request): JsonResponse {
         $response = $this->createBook($request);
         return $response;
     }
@@ -49,23 +38,11 @@ class BookController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
-    {
+    public function show($id): JsonResponse {
         $book = Book::findOrFail($id);
-        return response($book->toJson(), 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json($book->toJson(), 200);
     }
 
     /**
@@ -73,34 +50,23 @@ class BookController extends Controller
      *
      * @param  \App\Http\Requests\BookRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(BookRequest $request, $id)
-    {
+    public function update(BookRequest $request, $id): JsonResponse {
         $response = null;
 
-        $book = Book::find($id);
-        if(empty($book)){
-            $response = $this->createBook($request, $id);
-        }else{
-            $response = $this->updateBook($request, $book);
-        }
+        $book = Book::findOrFail($id);
+        $response = $this->updateBook($request, $book);
 
         return $response;
     }
 
-    private function createBook(BookRequest $request, $id = 0)
-    {
+    private function createBook(BookRequest $request): JsonResponse {
         $response = null;
 
         if($this->isExists(new Author, $request->author_id)){
             if($this->isExists(new Genre, $request->genre_id)){
-                if($id != 0){
-                    $data = array_merge(['id' => $id], $request->all());
-                }else{
-                    $data = $request->all();
-                }
-                $book = Book::create($data);
+                $book = Book::create($request->all());
                 $response = response()->json($book->toJson(), 201);
             }else{
                 $response = response()->json('No genre', 404);
@@ -111,13 +77,13 @@ class BookController extends Controller
         return $response;
     }
 
-    private function isExists($model, $id)
+    private function isExists($model, $id): bool
     {
-        $tmp = $model::findOrFail($id);
+        $tmp = $model::find($id);
         return boolval($tmp);
     }
 
-    private function updateBook(BookRequest $request, Book $book){
+    private function updateBook(BookRequest $request, Book $book): JsonResponse {
         $response = null;
 
         if($this->isExists(new Author, $request->author_id)){
@@ -138,13 +104,11 @@ class BookController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
-    {
+    public function destroy($id): JsonResponse {
         $book = Book::findOrFail($id);
         $book->delete();
-       
         return response()->json('Deleted succesfully', 204);
     }
 }

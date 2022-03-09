@@ -14,11 +14,9 @@ class AuthorController extends Controller
         return view('author.all')->with('authors', $authors);
     }
 
-    public function getById($id = 0)
+    public function getById($id)
     {
-        $author = $id !=0 ?
-                    Author::find($id):
-                    null;
+        $author = Author::find($id);
         return view('author.one_item')
                 ->with('author', $author)
                 ->with('id', $id);

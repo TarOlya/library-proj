@@ -12,7 +12,6 @@ class Genre extends Model
     protected $table = 'genre';
 
     protected $fillable = [
-        'id',
         'name'
     ];
 }

@@ -14,11 +14,9 @@ class GenreController extends Controller
         return view('genre.all')->with('genres', $genres);
     }
 
-    public function getById($id = 0)
+    public function getById($id)
     {
-        $genre = $id !=0 ?
-                    Genre::find($id):
-                    null;
+        $genre = Genre::find($id);
         return view('genre.one_item')
                 ->with('genre', $genre)
                 ->with('id', $id);

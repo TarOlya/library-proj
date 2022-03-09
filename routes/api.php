@@ -21,20 +21,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('authors', [Api\AuthorController::class, 'index']);
 Route::get('authors/{id}', [Api\AuthorController::class, 'show']);
-Route::put('authors/{id}', [Api\AuthorController::class, 'update']);
-Route::post('authors', [Api\AuthorController::class, 'store']);
+Route::patch('authors/{id}', [Api\AuthorController::class, 'update']);
+Route::post('authors', [Api\AuthorController::class, 'create']);
 Route::delete('authors/{id}', [Api\AuthorController::class, 'destroy']);
 
 
 Route::get('genres', [Api\GenreController::class, 'index']);
 Route::get('genres/{id}', [Api\GenreController::class, 'show']);
-Route::put('genres/{id}', [Api\GenreController::class, 'update']);
-Route::post('genres', [Api\GenreController::class, 'store']);
+Route::patch('genres/{id}', [Api\GenreController::class, 'update']);
+Route::post('genres', [Api\GenreController::class, 'create']);
 Route::delete('genres/{id}', [Api\GenreController::class, 'destroy']);
 
 
 Route::get('books', [Api\BookController::class, 'index']);
 Route::get('books/{id}', [Api\BookController::class, 'show']);
-Route::put('books/{id}', [Api\BookController::class, 'update']);
-Route::post('books', [Api\BookController::class, 'store']);
+Route::patch('books/{id}', [Api\BookController::class, 'update']);
+Route::post('books', [Api\BookController::class, 'create']);
 Route::delete('books/{id}', [Api\BookController::class, 'destroy']);
