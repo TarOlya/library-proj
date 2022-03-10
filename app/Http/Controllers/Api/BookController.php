@@ -37,77 +37,84 @@ class BookController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Book  $book
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): JsonResponse {
-        $book = Book::findOrFail($id);
-        return response()->json($book->toJson(), 200);
+    public function show(Book $book): JsonResponse {
+        return response()->json($book->toJson());
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\BookRequest  $request
-     * @param  int  $id
+     * @param  Book  $book
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(BookRequest $request, $id): JsonResponse {
-        $response = null;
-
-        $book = Book::findOrFail($id);
-        $response = $this->updateBook($request, $book);
-
-        return $response;
+    public function update(BookRequest $request, Book $book): JsonResponse {
+        return $this->updateBook($request, $book);
     }
 
+    /**
+     * Will create the resource in storage if all objects of entities are exists.
+     *
+     * @param  \App\Http\Requests\BookRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     private function createBook(BookRequest $request): JsonResponse {
         $response = null;
 
-        if($this->isExists(new Author, $request->author_id)){
-            if($this->isExists(new Genre, $request->genre_id)){
-                $book = Book::create($request->all());
-                $response = response()->json($book->toJson(), 201);
-            }else{
-                $response = response()->json('No genre', 404);
-            }
+        if($this->isExists(new Author, $request->author_id) && $this->isExists(new Genre, $request->genre_id)){
+            $book = Book::create($request->all());
+            $response = response()->json($book->toJson(), 201);
         }else{
-            $response = response()->json('No author', 404);
+            $response = $this->isExists(new Author, $request->author_id)?
+                    response()->json('No genre', 404):
+                    response()->json('No author', 404);
         }
         return $response;
     }
 
+    /** 
+     * Check if object exists in entity.
+     * 
+     * @param mixed  $model
+     * @param int  $id
+     * @return bool
+     */
     private function isExists($model, $id): bool
     {
         $tmp = $model::find($id);
         return boolval($tmp);
     }
 
+    /**
+     * Will update the resource in storage if all objects of entities are exists.
+     *
+     * @param  \App\Http\Requests\BookRequest  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     private function updateBook(BookRequest $request, Book $book): JsonResponse {
         $response = null;
 
-        if($this->isExists(new Author, $request->author_id)){
-            if($this->isExists(new Genre, $request->genre_id)){
-                $book->update($request->all());
-                $response = response()->json($book->toJson(), 200);
-            }else{
-                $response = response()->json('No genre', 404);
-            }
+        if($this->isExists(new Author, $request->author_id) && $this->isExists(new Genre, $request->genre_id)){
+            $book->update($request->all());
+            $response = response()->json($book->toJson(), 200);
         }else{
-            $response = response()->json('No author', 404);
+            $response = $this->isExists(new Author, $request->author_id)?
+                        response()->json('No genre', 404):
+                        response()->json('No author', 404);
         }
-        
         return $response;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Book  $book
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): JsonResponse {
-        $book = Book::findOrFail($id);
+    public function destroy(Book $book): JsonResponse {
         $book->delete();
         return response()->json('Deleted succesfully', 204);
     }

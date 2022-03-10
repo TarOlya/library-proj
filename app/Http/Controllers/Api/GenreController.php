@@ -34,11 +34,10 @@ class GenreController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Genre  $genre
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): JsonResponse {
-        $genre = Genre::findOrFail($id);
+    public function show(Genre $genre): JsonResponse {
         return response()->json($genre->toJson());
     }
 
@@ -46,26 +45,22 @@ class GenreController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\GenreRequest  $request
-     * @param  int  $id
+     * @param  Genre  $genre
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(GenreRequest $request, $id): JsonResponse {
-        $genre = Genre::findOrFail($id);
+    public function update(GenreRequest $request, Genre $genre): JsonResponse {
         $genre->update($request->all());
-
         return response()->json($genre->toJson());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Genre  $genre
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): JsonResponse {
-        $genre = Genre::findOrFail($id);
+    public function destroy(Genre $genre): JsonResponse {
         $genre->delete();
-
         return response()->json('Deleted succesfully', 204);
     }
 }

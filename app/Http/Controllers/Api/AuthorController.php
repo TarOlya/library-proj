@@ -33,11 +33,10 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Author  $author
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): JsonResponse {
-        $author = Author::findOrFail($id);
+    public function show(Author $author): JsonResponse {
         return response()->json($author->toJson());
     }
 
@@ -45,29 +44,22 @@ class AuthorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\AuthorRequest  $request
-     * @param  int  $id
+     * @param  Author  $author
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(AuthorRequest $request, $id): JsonResponse {
-        $response = null;
-
-        $author = Author::findOrFail($id);
+    public function update(AuthorRequest $request, Author $author): JsonResponse {
         $author->update($request->all());
-        $response = response()->json($author->toJson());
-
-        return $response;
+        return response()->json($author->toJson());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Author  $author
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): JsonResponse {
-        $author = Author::findOrFail($id);
+    public function destroy(Author $author): JsonResponse {
         $author->delete();
-            
         return response()->json('Deleted succesfully', 204);
     }
 }
