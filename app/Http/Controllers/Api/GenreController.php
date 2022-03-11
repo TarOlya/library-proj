@@ -63,4 +63,10 @@ class GenreController extends Controller
         $genre->delete();
         return response()->json('Deleted succesfully', 204);
     }
+
+    public function search(GenreRequest $request){
+        $query = $request->all();
+        $search_result = Genre::where('name', 'LIKE', '%'. $query['name'].'%')->get();
+        return response()->json($search_result);
+    }
 }

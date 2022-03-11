@@ -38,3 +38,7 @@ Route::get('books/{book}', [Api\BookController::class, 'show']);
 Route::patch('books/{book}', [Api\BookController::class, 'update']);
 Route::post('books', [Api\BookController::class, 'create']);
 Route::delete('books/{book}', [Api\BookController::class, 'destroy']);
+
+Route::get('search/authors', [Api\AuthorController::class, 'search']);
+Route::get('search/genres', [Api\GenreController::class, 'search']);
+Route::get('search/books', [Api\BookController::class, 'search']);

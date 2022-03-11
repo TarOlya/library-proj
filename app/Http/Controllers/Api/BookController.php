@@ -118,4 +118,10 @@ class BookController extends Controller
         $book->delete();
         return response()->json('Deleted succesfully', 204);
     }
+
+    public function search(BookRequest $request){
+        $query = $request->all();
+        $search_result = Book::where('name', 'LIKE', '%'. $query['name'].'%')->get();
+        return response()->json($search_result);
+    }
 }

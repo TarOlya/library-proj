@@ -62,4 +62,10 @@ class AuthorController extends Controller
         $author->delete();
         return response()->json('Deleted succesfully', 204);
     }
+
+    public function search(AuthorRequest $request){
+        $query = $request->all();
+        $search_result = Author::where('name', 'LIKE', '%'. $query['name'].'%')->get();
+        return response()->json($search_result);
+    }
 }

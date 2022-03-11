@@ -25,8 +25,6 @@ class BookRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'author_id' => 'required',
-            'genre_id' => 'required',
         ];
     }
 }
